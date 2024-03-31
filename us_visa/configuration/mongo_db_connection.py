@@ -2,10 +2,11 @@ import sys
 
 from us_visa.exception import USvisaException
 from us_visa.logger import logging
+import pymongo
 
 import os
 from us_visa.constants import DATABASE_NAME, MONGODB_URL_KEY
-import pymongo
+
 import certifi
 
 ca = certifi.where()
