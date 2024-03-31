@@ -25,3 +25,12 @@ pip install -r requirements.txt
 =======
 pip install -r requirements.txt
 
+
+
+## Work FLow
+1. constant
+2. config_entity
+3. artifact_entity
+4. component
+6. pipeline
+7. app.py
