@@ -8,7 +8,7 @@ Begin by setting up your environment to ensure all dependencies are correctly in
 
 ### Create and Activate Conda Environment
 
-```bash
+
 # Create a new Conda environment named 'visa' with Python 3.8
 conda create -n visa python=3.8 -y
 
@@ -17,7 +17,6 @@ conda activate visa
 
 ### Install Required Dependencies
 
-```bash
 # Install required Python packages from requirements.txt
 pip install -r requirements.txt
 
