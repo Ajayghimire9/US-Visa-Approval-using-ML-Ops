@@ -1,24 +1,26 @@
-US-Visa-Approval-using-ML-Ops
+# US-Visa-Approval-using-ML-Ops
+
 This project aims to predict US Visa approval using advanced Machine Learning operations (MLOps). It integrates a comprehensive workflow that spans constant definition, configuration management, artifact handling, modular component implementation, pipeline execution, and a user interface for application interaction.
 
-Environment Setup
+## Environment Setup
+
 Begin by setting up your environment to ensure all dependencies are correctly installed:
 
-Create and Activate Conda Environment
-bash
-Copy code
+### Create and Activate Conda Environment
+
+```bash
 # Create a new Conda environment named 'visa' with Python 3.8
 conda create -n visa python=3.8 -y
 
 # Activate the 'visa' environment
 conda activate visa
-Install Required Dependencies
-Install all necessary dependencies as specified in requirements.txt:
 
-bash
-Copy code
+### Install Required Dependencies
+
+```bash
 # Install required Python packages from requirements.txt
 pip install -r requirements.txt
+
 Project Workflow
 The project is organized into key components for efficient workflow management:
 
