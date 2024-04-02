@@ -22,10 +22,10 @@ pip install -r requirements.txt
 
 The project is organized into key components for efficient workflow management:
 
-- Constants: Central definitions for consistent use across the project.
-- Config Entity: Configuration entities that encapsulate the required setups.
-- Artifact Entity: Management of generated artifacts, such as data files, models, and logs.
-- Components: Specific tasks within the pipeline, including data ingestion, preprocessing, model training, and others.
+- Constants: Different variables
+- Config Entity: all files paths
+- Artifact Entity: data files 
+- Components: acutal stage 
 - Pipeline: The orchestration layer that manages the flow of data through the components and executes the machine learning pipeline.
 - Application Interface (`app.py`): The entry point for running the pipeline, facilitating user interaction and control.
 
