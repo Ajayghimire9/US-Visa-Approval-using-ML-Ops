@@ -1,4 +1,3 @@
-```markdown
 # US Visa Approval Prediction using Advanced MLOps
 
 This project aims to predict US Visa approval using advanced Machine Learning operations (MLOps). It integrates a comprehensive workflow that spans constant definition, configuration management, artifact handling, modular component implementation, pipeline execution, and a user interface for application interaction.
@@ -34,4 +33,4 @@ The project is organized into key components for efficient workflow management:
 
 After setting up your environment and installing all dependencies, initiate the project by running the application interface:
 
-pythoon.py
+python app.py
