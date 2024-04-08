@@ -63,7 +63,7 @@ The application follows a structured pipeline for processing and predicting US V
 
 Basic Git commands to track changes and push updates to the repository:
 
-```bash
+
 git add .
 git commit -m "Updated"
 git push origin main
