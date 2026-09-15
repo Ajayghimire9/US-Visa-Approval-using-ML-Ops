@@ -1,132 +1,36 @@
-# US-Visa-Approval-Prediction
+# VisaOps
 
-This project aims to predict the approval status of US Visa applications using machine learning models. It demonstrates the application's workflow from data processing to model prediction, integrating various technologies, including MongoDB for database management, AWS for cloud services, and Docker for containerization.
+Historical classification pipeline.
 
+VisaOps studies classification on a historical visa dataset. The maintained offline baseline runs independently of the original MongoDB and AWS infrastructure, making its assumptions and outputs easier to reproduce.
 
-## Quickstart
+## Run locally
 
-### Prerequisites
+Use Python 3.11 or newer in a virtual environment.
 
-- Anaconda or Miniconda
-- Git
+```bash
+pip install -r requirements-portfolio.txt
+python -m visaops.train --data notebook/Visadataset.csv
+```
 
-### Environment Setup
+## Design decisions
 
-1. **Clone the repository:**
+A ColumnTransformer handles numerical and categorical columns inside one fitted pipeline; unknown categories are accepted during inference.
 
-    ```bash
-    git clone https://github.com/Ajayghimire9/US-Visa-Approval-using-ML-Ops
-    cd US-Visa-Approval-Prediction
-    ```
+The label mapping is explicit: Certified=0 and Denied=1. The legacy UI now uses that same mapping.
 
-2. **Create and activate a new Conda environment:**
+The legacy transformation stage resamples training data only. The held-out population is left unchanged for evaluation.
 
-    ```bash
-    conda create -n visa python=3.8 -y
-    conda activate visa
-    ```
+Training is a command-line operation; the unauthenticated HTTP training endpoint has been removed. Legacy AWS deployment is manually triggered.
 
-3. **Install the required dependencies:**
+## Technology
 
-    ```bash
-    pip install -r requirements.txt
-    ```
+Python, pandas, scikit-learn, joblib; legacy FastAPI, MongoDB and AWS integrations.
 
-4. **Set up environment variables:**
+## Validation
 
-    Replace `<username>`, `<password>`, `<AWS_ACCESS_KEY_ID>`, and `<AWS_SECRET_ACCESS_KEY>` with your actual credentials.
+Run `python -m pytest tests -q` from the repository root. CI runs the maintained test suite and lint checks. Tests use local fixtures or mocks and do not deploy cloud resources.
 
-    ```bash
-    export MONGODB_URL="mongodb+srv://<username>:<password>@..."
-    export AWS_ACCESS_KEY_ID=<AWS_ACCESS_KEY_ID>
-    export AWS_SECRET_ACCESS_KEY=<AWS_SECRET_ACCESS_KEY>
-    ```
+## Scope and limitations
 
-5. **Run the application:**
-
-    ```bash
-    python app.py
-    ```
-
-## Workflow Overview
-
-The application follows a structured pipeline for processing and predicting US Visa approval status:
-
-1. **Constant:** Defines constant values used across the project.
-2. **Config Entity:** Manages configuration entities for the project.
-3. **Artifact Entity:** Handles the artifacts generated during the project.
-4. **Component:** Core components including data processing, modeling, etc.
-5. **Pipeline:** Orchestrates the workflow from data to prediction.
-6. **App/Demo:** The main application script for launching the project.
-
-## Git Commands
-
-Basic Git commands to track changes and push updates to the repository:
-
-
-git add .
-git commit -m "Updated"
-git push origin main
-
-
-## AWS CI/CD Deployment with GitHub Actions
-
-Automate the deployment process using GitHub Actions for continuous integration and continuous deployment (CI/CD) with AWS services.
-
-### Setting up AWS
-
-Before starting with GitHub Actions, set up the necessary AWS resources and permissions.
-
-1. **Login to AWS Console:**
-   - Navigate to the AWS Management Console and log in with your credentials.
-
-2. **Create an IAM user:**
-   - Go to the IAM dashboard and create a new user.
-   - Grant the following access permissions:
-     - EC2 Access: Allows management of EC2 instances.
-     - ECR Access: Permission to push and pull from Elastic Container Registry.
-
-3. **Attach Policies:**
-   - Attach the following policies to the user for the required permissions:
-     - `AmazonEC2ContainerRegistryFullAccess`
-     - `AmazonEC2FullAccess`
-
-### Deployment Steps
-
-Follow these steps to prepare and execute the deployment:
-
-1. **Create an ECR Repository:**
-   - In the AWS Management Console, navigate to the ECR service and create a new repository.
-   - Note the repository's URI for later steps.
-
-2. **Launch an EC2 Instance:**
-   - Create a new EC2 instance, selecting Ubuntu as the recommended OS.
-   - After launch, connect to your instance and install Docker:
-     ```bash
-     curl -fsSL https://get.docker.com -o get-docker.sh
-     sudo sh get-docker.sh
-     sudo usermod -aG docker $USER
-     ```
-
-3. **Configure EC2 as a Self-hosted Runner:**
-   - In your GitHub repository, go to Settings > Actions > Runners.
-   - Click on "New runner" and select the appropriate OS.
-   - Follow the instructions to configure your EC2 instance as a self-hosted runner.
-
-4. **Setup GitHub Secrets:**
-   - In your repository settings, navigate to Secrets and add the following:
-     - `AWS_ACCESS_KEY_ID`: Your IAM user's access key.
-     - `AWS_SECRET_ACCESS_KEY`: Your IAM user's secret access key.
-     - `AWS_DEFAULT_REGION`: Your AWS region.
-     - `ECR_REPO`: The URI of your ECR repository.
-
-### Automating Deployment with GitHub Actions
-
-- Create a `.github/workflows/aws-deployment.yml` file in your repository.
-- Define the steps for building your Docker image, pushing it to ECR, and deploying it to EC2.
-
-### Conclusion
-
-This project demonstrates an end-to-end machine learning application, from data processing and model training to deployment using AWS and GitHub Actions. It showcases how to leverage cloud services and CI/CD pipelines for efficient deployment workflows.
-
-For contributions, issues, or further inquiries, consider opening an issue in the project's GitHub repository or contacting the project maintainers directly.
+The dataset contains historical decisions and potentially biased proxies. Outputs are research predictions, not immigration advice or a basis for real eligibility decisions. Balanced accuracy and per-class metrics do not establish fairness. The cloud path has separate dependencies and requires configured credentials.

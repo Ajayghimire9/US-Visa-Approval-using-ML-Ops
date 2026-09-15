@@ -55,8 +55,8 @@ class DataTransformation:
             logging.info("Got numerical cols from schema config")
 
             numeric_transformer = StandardScaler()
-            oh_transformer = OneHotEncoder()
-            ordinal_encoder = OrdinalEncoder()
+            oh_transformer = OneHotEncoder(handle_unknown="ignore", sparse_output=False)
+            ordinal_encoder = OrdinalEncoder(handle_unknown="use_encoded_value", unknown_value=-1)
 
             logging.info("Initialized StandardScaler, OneHotEncoder, OrdinalEncoder")
 
@@ -161,7 +161,7 @@ class DataTransformation:
 
                 logging.info("Applying SMOTEENN on Training dataset")
 
-                smt = SMOTEENN(sampling_strategy="minority")
+                smt = SMOTEENN(sampling_strategy="minority", random_state=42)
 
                 input_feature_train_final, target_feature_train_final = smt.fit_resample(
                     input_feature_train_arr, target_feature_train_df
@@ -169,13 +169,10 @@ class DataTransformation:
 
                 logging.info("Applied SMOTEENN on training dataset")
 
-                logging.info("Applying SMOTEENN on testing dataset")
-
-                input_feature_test_final, target_feature_test_final = smt.fit_resample(
-                    input_feature_test_arr, target_feature_test_df
-                )
-
-                logging.info("Applied SMOTEENN on testing dataset")
+                # Evaluate on the original test distribution. Resampling held-out
+                # rows changes the population and invalidates reported metrics.
+                input_feature_test_final = input_feature_test_arr
+                target_feature_test_final = target_feature_test_df
 
                 logging.info("Created train array and test array")
 

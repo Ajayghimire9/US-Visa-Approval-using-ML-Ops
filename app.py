@@ -23,7 +23,7 @@ origins = ["*"]
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
-    allow_credentials=True,
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -63,19 +63,6 @@ async def index(request: Request):
             "usvisa.html",{"request": request, "context": "Rendering"})
 
 
-@app.get("/train")
-async def trainRouteClient():
-    try:
-        train_pipeline = TrainPipeline()
-
-        train_pipeline.run_pipeline()
-
-        return Response("Training successful !!")
-
-    except Exception as e:
-        return Response(f"Error Occurred! {e}")
-
-
 @app.post("/")
 async def predictRouteClient(request: Request):
     try:
@@ -102,10 +89,10 @@ async def predictRouteClient(request: Request):
         value = model_predictor.predict(dataframe=usvisa_df)[0]
 
         status = None
-        if value == 1:
-            status = "Visa-approved"
+        if value == 0:
+            status = "Historical model prediction: Certified"
         else:
-            status = "Visa Not-Approved"
+            status = "Historical model prediction: Denied"
 
         return templates.TemplateResponse(
             "usvisa.html",
